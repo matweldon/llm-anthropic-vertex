@@ -1,250 +1,85 @@
 interactions:
 - request:
-    body: '{"max_tokens":8192,"messages":[{"role":"user","content":[{"type":"text","text":"Two
-      names for a pet pelican"}]}],"model":"claude-3-5-haiku-latest","temperature":1.0,"tools":[{"name":"pelican_name_generator","description":"","input_schema":{"properties":{},"type":"object"}}],"stream":true}'
+    body: grant_type=refresh_token&client_id=xxx.apps.googleusercontent.com&client_id=xxx&refresh_token=xxx
     headers:
-      accept:
-      - application/json
-      accept-encoding:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
       - gzip, deflate
-      anthropic-version:
-      - '2023-06-01'
-      connection:
-      - keep-alive
-      content-length:
-      - '289'
-      content-type:
-      - application/json
-      host:
-      - api.anthropic.com
-      user-agent:
-      - Anthropic/Python 0.49.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - 'false'
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 0.49.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '0'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.0
-      x-stainless-stream-helper:
-      - messages
-      x-stainless-timeout:
-      - NOT_GIVEN
-    method: POST
-    uri: https://api.anthropic.com/v1/messages
-  response:
-    body:
-      string: 'event: message_start
-
-        data: {"type":"message_start","message":{"id":"msg_015S7FCRZ7rzjcyuJgzDu35c","type":"message","role":"assistant","model":"claude-3-5-haiku-latest","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":310,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":1}}               }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}           }
-
-
-        event: ping
-
-        data: {"type": "ping"}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"I"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"''ll"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        help"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        you generate"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        two names for a pet"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        pelican using"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        the pel"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"ican
-        name"}               }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        generator tool."}            }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":0            }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_017ngBid8gmdReTeroVSZf7r","name":"pelican_name_generator","input":{}}          }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":""}          }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":1            }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_01FJrHJrmnfEqR6NxkQ3yhpu","name":"pelican_name_generator","input":{}}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":""}          }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":2          }
-
-
-        event: message_delta
-
-        data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":82}
-        }
-
-
-        event: message_stop
-
-        data: {"type":"message_stop"     }
-
-
-        '
-    headers:
-      CF-RAY:
-      - 93f6657f3b13819f-IAD
-      Cache-Control:
-      - no-cache
       Connection:
       - keep-alive
+      Content-Length:
+      - '268'
       Content-Type:
-      - text/event-stream; charset=utf-8
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.5
+      x-goog-api-client:
+      - gl-python/3.13.9 auth/2.43.0 cred-type/u
+    method: POST
+    uri: https://oauth2.googleapis.com/token
+  response:
+    body:
+      string: "{\n  \"access_token\": \"xxx\",\n
+        \ \"expires_in\": 3599,\n  \"scope\": \"https://www.googleapis.com/auth/userinfo.email
+        openid https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/sqlservice.login\",\n
+        \ \"token_type\": \"Bearer\",\n  \"access_token\": \"xxx\"\n}"
+    headers:
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
       Date:
-      - Wed, 14 May 2025 00:49:36 GMT
+      - Wed, 12 Nov 2025 17:34:53 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
       Server:
-      - cloudflare
+      - scaffolding on HTTPServer2
       Transfer-Encoding:
       - chunked
-      X-Robots-Tag:
-      - none
-      anthropic-organization-id:
-      - b320df16-c763-4455-b901-3f7d54e9a012
-      anthropic-ratelimit-input-tokens-limit:
-      - '400000'
-      anthropic-ratelimit-input-tokens-remaining:
-      - '400000'
-      anthropic-ratelimit-input-tokens-reset:
-      - '2025-05-14T00:49:34Z'
-      anthropic-ratelimit-output-tokens-limit:
-      - '80000'
-      anthropic-ratelimit-output-tokens-remaining:
-      - '76000'
-      anthropic-ratelimit-output-tokens-reset:
-      - '2025-05-14T00:49:37Z'
-      anthropic-ratelimit-requests-limit:
-      - '4000'
-      anthropic-ratelimit-requests-remaining:
-      - '3999'
-      anthropic-ratelimit-requests-reset:
-      - '2025-05-14T00:49:34Z'
-      anthropic-ratelimit-tokens-limit:
-      - '480000'
-      anthropic-ratelimit-tokens-remaining:
-      - '476000'
-      anthropic-ratelimit-tokens-reset:
-      - '2025-05-14T00:49:34Z'
-      cf-cache-status:
-      - DYNAMIC
-      request-id:
-      - req_011CP6WAyuHukdWpSHUSs5Xa
-      strict-transport-security:
-      - max-age=31536000; includeSubDomains; preload
-      via:
-      - 1.1 google
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
     status:
       code: 200
       message: OK
 - request:
     body: '{"max_tokens":8192,"messages":[{"role":"user","content":[{"type":"text","text":"Two
-      names for a pet pelican"}]},{"role":"assistant","content":[{"type":"text","text":"I''ll
-      help you generate two names for a pet pelican using the pelican name generator
-      tool. "},{"type":"tool_use","id":"toolu_017ngBid8gmdReTeroVSZf7r","name":"pelican_name_generator","input":{}},{"type":"tool_use","id":"toolu_01FJrHJrmnfEqR6NxkQ3yhpu","name":"pelican_name_generator","input":{}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_017ngBid8gmdReTeroVSZf7r","content":"Charles"},{"type":"tool_result","tool_use_id":"toolu_01FJrHJrmnfEqR6NxkQ3yhpu","content":"Sammy"}]}],"model":"claude-3-5-haiku-latest","temperature":1.0,"tools":[{"name":"pelican_name_generator","description":"","input_schema":{"properties":{},"type":"object"}}],"stream":true}'
+      names for a pet pelican"}]}],"temperature":1.0,"tools":[{"name":"pelican_name_generator","description":"","input_schema":{"properties":{},"type":"object"}}],"stream":true,"anthropic_version":"vertex-2023-10-16"}'
     headers:
       accept:
       - application/json
       accept-encoding:
       - gzip, deflate
-      anthropic-version:
-      - '2023-06-01'
       connection:
       - keep-alive
       content-length:
-      - '846'
+      - '295'
       content-type:
       - application/json
       host:
-      - api.anthropic.com
+      - europe-west1-aiplatform.googleapis.com
       user-agent:
-      - Anthropic/Python 0.49.0
+      - AnthropicVertex/Python 0.72.1
       x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - 'false'
+      - x64
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 0.49.0
+      - 0.72.1
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -252,249 +87,201 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.0
+      - 3.13.9
       x-stainless-stream-helper:
       - messages
       x-stainless-timeout:
       - NOT_GIVEN
     method: POST
-    uri: https://api.anthropic.com/v1/messages
+    uri: https://europe-west1-aiplatform.googleapis.com/v1/projects/dummy-project/locations/europe-west1/publishers/anthropic/models/claude-haiku-4-5@20251001:streamRawPredict
   response:
     body:
-      string: 'event: message_start
-
-        data: {"type":"message_start","message":{"id":"msg_01D1nvzuHQ8VJa4qGExgy5TW","type":"message","role":"assistant","model":"claude-3-5-haiku-latest","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":465,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":2}}  }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}       }
-
-
-        event: ping
-
-        data: {"type": "ping"}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Here"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        are two"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        fun"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        names for your"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        pet pelican:"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"\n1"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":".
-        Charles"}               }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        - A distinguishe"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"d,
-        classic name that gives"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        your pelican a"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        bit of sophist"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"ication.\n2."}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        Sammy - A"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        friendly, playful name that"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        suggests a"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        cheerful an"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"d
-        approachable personality."}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"\n\nWould
-        you like me to generate"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        more names or"}               }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        do you like"} }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        these? Each"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        pelican name can"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        have its own unique charm"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":",
-        so feel free to ask"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        for more suggestions"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"!"}            }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":0            }
-
-
-        event: message_delta
-
-        data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":95}        }
-
-
-        event: message_stop
-
-        data: {"type":"message_stop"      }
-
-
-        '
+      string: !!binary |
+        H4sIAAAAAAAC/2SOwWrDMBBE7/4Ko3MMshLnoFuhkEvpKe2hpQhZWhIReeVIq5AS/O+VoYaa7m3f
+        DDMDN0CS9QAp6ROoRDpSZTVpWT8YfY/AJFuJbLP8TD7YECz4YjFeZwvNWbtLbnZN1wguupbzttid
+        nTPSSd0i3RVv35/eXvv7Fuw2Yv98OA5i//LRF+O6roAY/Ax0Sq5049xtAlJZzOTn14YlCqOKoFNA
+        JjF7/4sSXDOggQXmZa7DMZOicAFMTHY7UQK1OYMyJYVcQLV28EUvsv2vhUx/idhPU726qap+AAAA
+        //9KhQRwQWZeOlq4KiiBBJWAagAAAAD//4KqgfotPiknPzkbe1RgUQIK4byU1AqIa5HlQT6G6ivJ
+        z8+JLy1OhUUHiF8Kj5CSVKfgLEMv9yjjqggjcx/DoADnVFOg0rzEXJDmgtSczOTEvHgQNz49NS+1
+        KLEkvwhsL9D7QFvg3gb6BQAAAP//wuoXYCIpScTvF7ASFL9ARBB+gAR/FjCy4YoLgP7PTMwBCwJV
+        KNVC3AAAAAD//8IRnvkFhIIzvwDJBSjRCAAAAP//olIUGZIZRSGWXiFBFnm5zl6OPnmhfpWplpl+
+        FhXkRBGSnwAAAAD//6JSVBmSHVUIpwAAAAD//6JKjBmi+Q8AAAD//0pFLduw+gxFUgnJJyhlC3Lk
+        YClhapGKGLQywcyoFs1VAAAAAP//SkUvcTE9iSynBNcIAAAA//8DAJ5utvarBQAA
     headers:
-      CF-RAY:
-      - 93f665913c6f3975-IAD
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - text/event-stream; charset=utf-8
-      Date:
-      - Wed, 14 May 2025 00:49:38 GMT
-      Server:
-      - cloudflare
       Transfer-Encoding:
       - chunked
-      X-Robots-Tag:
-      - none
-      anthropic-organization-id:
-      - b320df16-c763-4455-b901-3f7d54e9a012
-      anthropic-ratelimit-input-tokens-limit:
-      - '400000'
-      anthropic-ratelimit-input-tokens-remaining:
-      - '400000'
-      anthropic-ratelimit-input-tokens-reset:
-      - '2025-05-14T00:49:37Z'
-      anthropic-ratelimit-output-tokens-limit:
-      - '80000'
-      anthropic-ratelimit-output-tokens-remaining:
-      - '76000'
-      anthropic-ratelimit-output-tokens-reset:
-      - '2025-05-14T00:49:40Z'
-      anthropic-ratelimit-requests-limit:
-      - '4000'
-      anthropic-ratelimit-requests-remaining:
-      - '3999'
-      anthropic-ratelimit-requests-reset:
-      - '2025-05-14T00:49:37Z'
-      anthropic-ratelimit-tokens-limit:
-      - '480000'
-      anthropic-ratelimit-tokens-remaining:
-      - '476000'
-      anthropic-ratelimit-tokens-reset:
-      - '2025-05-14T00:49:37Z'
-      cf-cache-status:
-      - DYNAMIC
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      cache-control:
+      - no-cache
+      date:
+      - Wed, 12 Nov 2025 17:34:53 GMT
       request-id:
-      - req_011CP6WBCFCKyujPmt2qiLNR
-      strict-transport-security:
-      - max-age=31536000; includeSubDomains; preload
-      via:
-      - 1.1 google
+      - req_vrtx_011CV4Q3yLUonL8rJPv2i5yE
+      server:
+      - hypercorn-h11
+      x-accel-buffering:
+      - 'no'
+      x-vertex-ai-received-request-id:
+      - 72298e47-b216-4ee5-a012-3baebd75b92a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: grant_type=refresh_token&client_id=xxx.apps.googleusercontent.com&client_id=xxx&refresh_token=xxx
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '268'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.5
+      x-goog-api-client:
+      - gl-python/3.13.9 auth/2.43.0 cred-type/u
+    method: POST
+    uri: https://oauth2.googleapis.com/token
+  response:
+    body:
+      string: "{\n  \"access_token\": \"xxx\",\n
+        \ \"expires_in\": 3599,\n  \"scope\": \"https://www.googleapis.com/auth/userinfo.email
+        openid https://www.googleapis.com/auth/sqlservice.login https://www.googleapis.com/auth/cloud-platform\",\n
+        \ \"token_type\": \"Bearer\",\n  \"access_token\": \"xxx\"\n}"
+    headers:
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Nov 2025 17:34:55 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - scaffolding on HTTPServer2
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"max_tokens":8192,"messages":[{"role":"user","content":[{"type":"text","text":"Two
+      names for a pet pelican"}]},{"role":"assistant","content":[{"type":"text","text":"
+      "},{"type":"tool_use","id":"toolu_vrtx_01VteBSj1JGZ3zX27L1RPCe5","name":"pelican_name_generator","input":{}},{"type":"tool_use","id":"toolu_vrtx_01T9JTR8nmCJALnUNye9iN8x","name":"pelican_name_generator","input":{}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_vrtx_01VteBSj1JGZ3zX27L1RPCe5","content":"Charles"},{"type":"tool_result","tool_use_id":"toolu_vrtx_01T9JTR8nmCJALnUNye9iN8x","content":"Sammy"}]}],"temperature":1.0,"tools":[{"name":"pelican_name_generator","description":"","input_schema":{"properties":{},"type":"object"}}],"stream":true,"anthropic_version":"vertex-2023-10-16"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '783'
+      content-type:
+      - application/json
+      host:
+      - europe-west1-aiplatform.googleapis.com
+      user-agent:
+      - AnthropicVertex/Python 0.72.1
+      x-stainless-arch:
+      - x64
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 0.72.1
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.13.9
+      x-stainless-stream-helper:
+      - messages
+      x-stainless-timeout:
+      - NOT_GIVEN
+    method: POST
+    uri: https://europe-west1-aiplatform.googleapis.com/v1/projects/dummy-project/locations/europe-west1/publishers/anthropic/models/claude-haiku-4-5@20251001:streamRawPredict
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAC/2SOwWrDMBBE7/4Ko3MMsknaoGPJqfQScihpKUKVllhEXrnelWkb/O+VoYaaHvfN
+        Y2ZhBGRVdkBkLqCJzcCFM2xUeRP81YNQYhWKzXILdRNddBCyYoNJDqrW+GuqttWuamSzq6Wss+7d
+        3EEXPQ78qWX93J0bd4jf+HQ2Lw/t6fE47t9PWVzPZTDEMAND5PM2zts2IuePhXp92wji2OsBDEUU
+        ClMIv4jgIwFaWGBa3vXYJ9Ycr4Ak1N39Phca24K2uYV9RL025JLn2P3PYuK/pJ6mciqKHwAAAP//
+        SoUEaUFmXjpaSCoogQSVgGoAAAAA//+CqoH6Jj4pJz85G3vgY1ECCtO8lNQKiPuQ5UF+hOorSa0A
+        KQRTVkpKtQpQALQcAAAA///CajkwHksS8VsOVoJiOUQE1VK4MqjVHqlFqRDrgVYDAAAA//+ir9UK
+        iUWpCiXl+QrpoOhFhAHELQAAAAD//6KzW/ISgQkb7Aag3QAAAAD//6Kz3Wn5RQqJCgWpJUCck5mc
+        mGcVkxeTZ4gSImB3AQAAAP//oq+79BS0tJwzEotyUou1tBR0FRwVUoAZHZhFSjOLM1IxXQcAAAD/
+        /6Kv61IUEvNSFJKB7oO5BOgEAAAAAP//oq8TcoFhAU44oBhECw+QawAAAAD//6JzMqrMLwW7Amgz
+        AAAA//+idwLGkhoAAAAA//+irxMSSzKABVmKQlpRZmpeSkyeESjxYjoKAAAA//+ir6OCE3NzK6FZ
+        B+KwnEpkNwEdBAAAAP//oneJC8wyiQUFRfnAajMxKScVknrLM0sy0JMvyHEAAAAA//+it+MU0krz
+        sLkDAAAA//+irzt0FJITi0sTc5CKFQAAAAD//6J7dkrNAdUATvklGQrl+aU5aIkGAAAA//+id0Gb
+        m5gNTCT5QF1FaaU5SFUlWjwBAAAA//8aoGoTXGUqKjhn5OcXA92ZkZmMSM1AVwEAAAD//6Kvq4C2
+        FYEjsFghJzM7FdaiAAAAAP//onPQAEtDhaTU4hKY9QAAAAD//6J3zGSWgGMHVCOB2jXobTsAAAAA
+        //+ir3PUi4FuKAL2QhJzMksq9RSgdSQAAAD//6KvIz7MX9amBO6AAAAAAP//wtG5yC8g1LfIL0Cy
+        FRKQAAAAAP//SkXtH2J1PYqkEpJrUfpnSsDaKb6ktChPCWsvrRapm4bWr7IwrYXFKwAAAP//SkXv
+        rmJ6CllOCaoNAAAA//8DAOgcLVrmDgAA
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/event-stream; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      cache-control:
+      - no-cache
+      date:
+      - Wed, 12 Nov 2025 17:34:55 GMT
+      request-id:
+      - req_vrtx_011CV4Q49F3NAWXhsTQDL7P3
+      server:
+      - hypercorn-h11
+      x-accel-buffering:
+      - 'no'
     status:
       code: 200
       message: OK

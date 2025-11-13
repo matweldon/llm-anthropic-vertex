@@ -10,13 +10,14 @@ classifiers = []
 dependencies = [
     "llm>=0.26",
     "anthropic[vertex]>=0.72.0",
+    "pytest>=9.0.1",
 ]
 
 [project.urls]
 Homepage = "https://github.com/matweldon/llm-anthropic-vertex"
 
 [project.entry-points.llm]
-anthropic-vertex = "llm_anthropic"
+anthropic-vertex = "llm_anthropic_vertex"
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-recording", "pytest-asyncio", "cogapp"]

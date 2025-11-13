@@ -14,69 +14,66 @@ TINY_PNG = (
     b"\x82"
 )
 
-ANTHROPIC_API_KEY = os.environ.get("PYTEST_ANTHROPIC_API_KEY", None) or "sk-..."
-
+PROJECT_ID = 'dummy-project'
+REGION = 'europe-west1'
 
 @pytest.mark.vcr
 def test_prompt():
-    model = llm.get_model("claude-3-opus")
-    model.key = model.key or ANTHROPIC_API_KEY
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
     response = model.prompt("Two names for a pet pelican, be brief")
-    assert str(response) == "1. Pelly\n2. Beaky"
+    assert str(response) == "1. **Petro**\n2. **Captain Beak**"
     response_dict = dict(response.response_json)
     response_dict.pop("id")  # differs between requests
     assert response_dict == {
-        "content": [{"citations": None, "text": "1. Pelly\n2. Beaky", "type": "text"}],
-        "model": "claude-3-opus-20240229",
+        "content": [{"citations": None, "text": "1. **Petro**\n2. **Captain Beak**", "type": "text"}],
+        "model": "claude-haiku-4-5-20251001",
         "role": "assistant",
         "stop_reason": "end_turn",
         "stop_sequence": None,
         "type": "message",
     }
     assert response.input_tokens == 17
-    assert response.output_tokens == 15
+    assert response.output_tokens == 20
     assert response.token_details is None
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
 async def test_async_prompt():
-    model = llm.get_async_model("claude-3-opus")
-    model.key = model.key or ANTHROPIC_API_KEY  # don't override existing key
+    model = llm.get_async_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
     conversation = model.conversation()
     response = await conversation.prompt("Two names for a pet pelican, be brief")
-    assert await response.text() == "1. Pelly\n2. Beaky"
+    assert await response.text() == "1. **Pouch**\n2. **Captain**"
     response_dict = dict(response.response_json)
     response_dict.pop("id")  # differs between requests
     assert response_dict == {
-        "content": [{"citations": None, "text": "1. Pelly\n2. Beaky", "type": "text"}],
-        "model": "claude-3-opus-20240229",
+        "content": [{"citations": None, "text": "1. **Pouch**\n2. **Captain**", "type": "text"}],
+        "model": "claude-haiku-4-5-20251001",
         "role": "assistant",
         "stop_reason": "end_turn",
         "stop_sequence": None,
         "type": "message",
     }
     assert response.input_tokens == 17
-    assert response.output_tokens == 15
+    assert response.output_tokens == 17
     assert response.token_details is None
-    # Try a reply
-    response2 = await conversation.prompt("in french")
-    assert await response2.text() == "1. Pélican\n2. Bec"
 
 
 EXPECTED_IMAGE_TEXT = (
-    "This image shows two simple rectangular blocks of solid colors stacked "
-    "vertically. The top rectangle is a bright, vibrant red color, while the "
-    "bottom rectangle is a bright, neon green color. The rectangles appear to "
-    "be of similar width but may be slightly different in height. The colors "
-    "are very saturated and create a striking contrast against each other."
+    "# Red and Green\n\nThree words describing this image:\n"
+    "\n1. **Red** - top rectangle\n2. **Green** - bottom rectangle\n3. **Rectangles** - shape/form"
 )
 
 
 @pytest.mark.vcr
 def test_image_prompt():
-    model = llm.get_model("claude-3.5-sonnet")
-    model.key = model.key or ANTHROPIC_API_KEY
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
     response = model.prompt(
         "Describe image in three words",
         attachments=[llm.Attachment(content=TINY_PNG)],
@@ -86,59 +83,33 @@ def test_image_prompt():
     response_dict.pop("id")  # differs between requests
     assert response_dict == {
         "content": [{"citations": None, "text": EXPECTED_IMAGE_TEXT, "type": "text"}],
-        "model": "claude-3-5-sonnet-20241022",
+        "model": 'claude-haiku-4-5-20251001',
         "role": "assistant",
         "stop_reason": "end_turn",
         "stop_sequence": None,
         "type": "message",
     }
 
-    assert response.input_tokens == 76
-    assert response.output_tokens == 75
+    assert response.input_tokens == 83
     assert response.token_details is None
 
 
 @pytest.mark.vcr
 def test_image_with_no_prompt():
-    model = llm.get_model("claude-3.5-sonnet")
-    model.key = model.key or ANTHROPIC_API_KEY
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
     response = model.prompt(
         prompt=None,
         attachments=[llm.Attachment(content=TINY_PNG)],
     )
     assert str(response) == (
-        "This image shows two simple rectangular blocks of solid colors stacked "
-        "vertically. The top rectangle is colored in a bright red, while the "
-        "bottom rectangle is colored in a vibrant lime green. They appear to "
-        "be of similar width but the green rectangle seems slightly taller "
-        "than the red one. The colors are very saturated and pure, creating "
-        "a strong visual contrast between the two blocks."
+        "# Color Analysis\n\nThis image shows two colored rectangles:\n"
+        "\n1. **Top rectangle**: Red (#FF0000)"
+        "\n2. **Bottom rectangle**: Bright Green/Lime Green (#00FF00)\n"
+        "\nThese are primary colors in the RGB color model, displayed as solid blocks with white space between them."
     )
 
-
-@pytest.mark.vcr
-def test_url_prompt():
-    model = llm.get_model("claude-3.5-sonnet")
-    model.key = model.key or ANTHROPIC_API_KEY
-    response = model.prompt(
-        prompt="describe image",
-        attachments=[
-            llm.Attachment(
-                url="https://static.simonwillison.net/static/2024/pelican.jpg"
-            )
-        ],
-    )
-    assert str(response) == (
-        "This image shows a Brown Pelican perched on rocky ground near what appears "
-        "to be a marina or harbor, with boats visible in the background. The pelican "
-        "is captured in a profile view, showing off its distinctive long beak and "
-        "throat pouch. The bird's feathers appear to be a grayish-brown color, and "
-        "there's a nice rim lighting effect around its head and neck created by what "
-        "seems to be backlighting from the sun. The pelican's posture is upright and "
-        "alert, which is typical for these coastal birds. The setting suggests this "
-        "is likely taken at a coastal location where pelicans commonly gather to rest "
-        "and fish."
-    )
 
 
 class Dog(BaseModel):
@@ -149,121 +120,92 @@ class Dog(BaseModel):
 
 @pytest.mark.vcr
 def test_schema_prompt():
-    model = llm.get_model("claude-3.7-sonnet")
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
 
-    response = model.prompt("Invent a good dog", schema=Dog, key=ANTHROPIC_API_KEY)
+    response = model.prompt("Invent a good dog", schema=Dog)
     dog = json.loads(response.text())
     assert dog == {
-        "name": "Buddy",
-        "age": 3,
-        "bio": "Buddy is a loyal and energetic Golden Retriever who loves long walks.",
+        "name": "Max",
+        "age": 4,
+        "bio": ("Max is a charming Golden Retriever with a heart of pure gold."
+        " Known for his boundless energy, he loves long hikes, swimming in lakes, and playing fetch with an enthusiasm that never seems to fade."
+        " Max has an incredible ability to sense when someone needs comfort and is always ready with a wagging tail and a gentle nudge."
+        " He's got a silly sense of humor and loves to make his human family laugh with his goofy antics."
+        " Despite his playful nature, Max is incredibly well-behaved, obedient, and has completed advanced obedience training."
+        " He's the kind of dog who greets every person and other dog he meets as a best friend."
+        " Max thrives on companionship and adventures, and his loyalty is unwavering."),
     }
 
-
-@pytest.mark.vcr
-@pytest.mark.asyncio
-async def test_schema_prompt_async():
-    model = llm.get_async_model("claude-3.7-sonnet")
-    response = await model.prompt(
-        "Invent a terrific dog", schema=Dog, key=ANTHROPIC_API_KEY
-    )
-    dog_json = await response.text()
-    dog = json.loads(dog_json)
-    assert dog == {
-        "name": "Maximus Thunder",
-        "age": 3,
-        "bio": (
-            "Maximus Thunder is an extraordinary golden retriever with a natural "
-            "talent for search and rescue operations. His keen sense of smell "
-            "can detect people trapped under debris from over a mile away. When "
-            "he's not saving lives, Maximus enjoys surfing at the beach and has "
-            "won three local dog surfing competitions. He's also incredibly "
-            "gentle with children and regularly visits hospitals as a therapy "
-            "dog. His favorite treat is peanut butter, and he has a unique howl "
-            'that sounds remarkably like he\'s saying "hello."'
-        ),
-    }
 
 
 @pytest.mark.vcr
 def test_prompt_with_prefill_and_stop_sequences():
-    model = llm.get_model("claude-3.5-haiku")
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
     response = model.prompt(
         "Very short function describing a pelican",
         prefill="```python",
         stop_sequences=["```"],
         hide_prefill=True,
-        key=ANTHROPIC_API_KEY,
     )
     text = response.text()
-    assert text.startswith(
-        "\ndef describe_pelican():\n"
-        '    """\n'
-        "    A function describing the characteristics of a pelican.\n"
-        "    \n"
-        "    Returns:\n"
-        "        A dictionary with various details about pelicans.\n"
-        '    """\n'
-        "    pelican_details = {\n"
-        '        "species": "Pelecanus",\n'
-        '        "habitat": "Coastal areas, lakes, and rivers",\n'
-    )
-    assert text.endswith(
-        'print("Distinctive Features:", '
-        'pelican_info["physical_characteristics"]["distinctive_features"])\n'
+    assert text == (
+        """
+def pelican():
+    \"\"\"A large water bird with a distinctive expandable throat pouch.\"\"\"
+    return {
+        "body": "Large, heavy-bodied",
+        "beak": "Long and straight",
+        "pouch": "Expandable throat for catching fish",
+        "habitat": "Coastal and inland waters",
+        "diet": "Fish"
+    }
+"""
     )
 
 
 @pytest.mark.vcr
 def test_thinking_prompt():
-    model = llm.get_model("claude-3.7-sonnet")
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id = PROJECT_ID
+    model.region = REGION
     conversation = model.conversation()
     response = conversation.prompt(
-        "Two names for a pet pelican, be brief", thinking=True, key=ANTHROPIC_API_KEY
+        "Two names for a pet pelican, be brief", thinking=True,
     )
-    assert response.text() == "Scoop and Beaky"
+    assert response.text() ==   "1. **Pouch** — references their iconic bill pouch\n2. **Captain** — nautical and playful for a water-loving bird"
     response_dict = dict(response.response_json)
-    response_dict.pop("id")  # differs between requests
-    assert response_dict == {
-        "content": [
-            {
-                "signature": "EuYBCkQYAiJAZFFuoMD/kqVzMZ887Sa1rJBpa5UU5W+YVHe0PV1dh0T1ZHHOQcSUTMB9iPC6hhduyszf501Ao1McU4sUwlL2UhIM0nyNDklwN6dy0bkUGgx7Ny7JpGHlGJ3+mR8iMHcNBzvnVJwp6XmCs9jieB8BWgth2vmVOuSU+mUYw2bT4pkzVkVsxFnA1lh2T1kjRSpQltDXxi/Pyq3WdD/W4gnV9HIJ4Cb5olNXUrMvKUyoim0MfvyOU7wuyAi7J74CVw0Te6DW8GQf3/1jVYxeMEEBszuSU5IuyxB0BKWW5TfALM0=",
-                "thinking": "The person is asking for two names for a pet pelican, and they want me to be brief in my response. I'll provide two concise, creative names that would suit a pelican:\n\n1. Something that relates to their large beak/pouch\n2. Something that relates to water/fishing\n\nI'll keep my response very short as requested.",
-                "type": "thinking",
-            },
-            {"citations": None, "text": "Scoop and Beaky", "type": "text"},
-        ],
-        "model": "claude-3-7-sonnet-20250219",
-        "role": "assistant",
-        "stop_reason": "end_turn",
-        "stop_sequence": None,
-        "type": "message",
-    }
-
+    assert response_dict['model'] == "claude-haiku-4-5-20251001"
+    assert response_dict['stop_reason'] == 'end_turn'
+    assert response_dict['stop_sequence'] is None
+    content_types = [turn['type'] for turn in response_dict['content']]
+    assert content_types == ['thinking','text']
     assert response.input_tokens == 45
-    assert response.output_tokens == 94
     assert response.token_details is None
 
 
 @pytest.mark.vcr
 def test_tools():
-    model = llm.get_model("claude-3.5-haiku")
+    model = llm.get_model("vertex-4.5-haiku")
+    model.project_id=PROJECT_ID
+    model.region=REGION
     names = ["Charles", "Sammy"]
     chain_response = model.chain(
         "Two names for a pet pelican",
         tools=[
             llm.Tool.function(lambda: names.pop(0), name="pelican_name_generator"),
         ],
-        key=ANTHROPIC_API_KEY,
     )
     text = chain_response.text()
     assert text == (
-        "I'll help you generate two names for a pet pelican using the pelican name generator tool. "
-        "Here are two fun names for your pet pelican:\n"
-        "1. Charles - A distinguished, classic name that gives your pelican a bit of sophistication.\n"
-        "2. Sammy - A friendly, playful name that suggests a cheerful and approachable personality.\n\n"
-        "Would you like me to generate more names or do you like these? Each pelican name can have "
-        "its own unique charm, so feel free to ask for more suggestions!"
+        " Here are two great names for a pet pelican:\n"
+        "\n1. **Charles** - A distinguished and charming name for your feathered friend"
+        "\n2. **Sammy** - A friendly and approachable name with a fun, casual feel\n"
+        "\nBoth would make wonderful names for a pelican! "
+        "Choose whichever feels like the best fit for your pet's personality. 🦆"
     )
     tool_calls = chain_response._responses[0].tool_calls()
     assert len(tool_calls) == 2

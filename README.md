@@ -13,15 +13,15 @@ Install this plugin in the same environment as [LLM](https://llm.datasette.io/).
 ### From source
 ```bash
 cd llm-anthropic-vertex
-pip install -e .
+llm install -e .
 ```
 
 ## Prerequisites
 
-You'll need:
-1. A Google Cloud Platform account
-2. A GCP project with Vertex AI enabled
-3. Appropriate IAM permissions to use Vertex AI
+1. A Google Cloud project with the Vertex AI API enabled
+2. Appropriate IAM roles on your user account (or a Service Account with appropriate IAM roles, see below)
+3. Each Anthropic model to be used must be individually enabled in your project's Vertex AI model garden console
+4. Install the `gcloud` SDK
 
 ## Authentication
 
@@ -60,7 +60,7 @@ Run `llm models list` to list the models, and `llm models --options` to include 
 Run prompts like this:
 ```bash
 llm -m vertex-sonnet-4.5 'Fun facts about Newport, Wales'
-llm -m anthropic-vertex/claude-3-opus@20240229 'Fun facts about national statistics'
+llm -m anthropic-vertex/claude-opus-4-1@20250805 'Fun facts about national statistics'
 ```
 Image attachments are supported too:
 ```bash
@@ -231,7 +231,7 @@ To run the tests:
 pytest
 ```
 
-This project uses [pytest-recording](https://github.com/kiwicom/pytest-recording) to record Vertex AI API responses for the tests. Updating the stored responses is not recommended unless you know what you're doing. Please log an issue for assistance.
+This project uses [pytest-recording](https://github.com/kiwicom/pytest-recording) to record Vertex AI API responses for the tests. Updating the stored responses is not recommended unless you're very patient because the API calls contain sensitive credentials. Please log an issue for advice.
 
 
 

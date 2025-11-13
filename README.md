@@ -1,44 +1,59 @@
-# llm-anthropic
+# llm-anthropic-vertex
 
-[![PyPI](https://img.shields.io/pypi/v/llm-anthropic.svg)](https://pypi.org/project/llm-anthropic/)
-[![Changelog](https://img.shields.io/github/v/release/simonw/llm-anthropic?include_prereleases&label=changelog)](https://github.com/simonw/llm-anthropic/releases)
-[![Tests](https://github.com/simonw/llm-anthropic/actions/workflows/test.yml/badge.svg)](https://github.com/simonw/llm-anthropic/actions/workflows/test.yml)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/simonw/llm-anthropic/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/matweldon/llm-anthropic-vertex/blob/main/LICENSE)
 
-LLM access to models by Anthropic, including the Claude series
+LLM access to Anthropic Claude models via Google Vertex AI
+
+This is a fork of [llm-anthropic](https://github.com/simonw/llm-anthropic) adapted to work with Google Vertex AI's Anthropic integration. It provides access to all Claude models (3, 3.5, 3.7, 4, and 4.5) through Google Cloud.
 
 ## Installation
 
 Install this plugin in the same environment as [LLM](https://llm.datasette.io/).
+
+### From source
 ```bash
-llm install llm-anthropic
+cd llm-anthropic-vertex
+pip install -e .
 ```
 
-<details><summary>Instructions for users who need to upgrade from <code>llm-claude-3</code></summary>
+## Prerequisites
 
-<br>
+You'll need:
+1. A Google Cloud Platform account
+2. A GCP project with Vertex AI enabled
+3. Appropriate IAM permissions to use Vertex AI
 
-If you previously used `llm-claude-3` you can upgrade like this:
+## Authentication
 
+This plugin uses Google Cloud credentials instead of API keys. Set up authentication using one of these methods:
+
+### Method 1: Application Default Credentials (Recommended for local development)
 ```bash
-llm install -U llm-claude-3
-llm keys set anthropic --value "$(llm keys get claude)"
-```
-The first line will remove the previous `llm-claude-3` version and install this one, because the latest `llm-claude-3` depends on `llm-anthropic`.
-
-The second line sets the `anthropic` key to whatever value you previously used for the `claude` key.
-
-</details>
-
-## Usage
-
-First, set [an API key](https://console.anthropic.com/settings/keys) for Anthropic:
-```bash
-llm keys set anthropic
-# Paste key here
+gcloud auth application-default login
 ```
 
-You can also set the key in the environment variable `ANTHROPIC_API_KEY`
+### Method 2: Service Account (Recommended for production)
+1. Create a service account with Vertex AI permissions
+2. Download the service account JSON key file
+3. Set the environment variable:
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
+```
+
+## Configuration
+
+Set your Google Cloud project ID and region using environment variables:
+
+```bash
+export GOOGLE_CLOUD_PROJECT="your-project-id"
+export GOOGLE_CLOUD_REGION="us-east5"  # Optional, defaults to us-east5
+```
+
+Alternatively, you can use:
+```bash
+export GCP_PROJECT="your-project-id"
+export GCP_REGION="us-east5"
+```
 
 Run `llm models` to list the models, and `llm models --options` to include a list of their options.
 
@@ -83,16 +98,17 @@ print(model.prompt("Fun facts about chipmunks"))
 ```
 Consult [LLM's Python API documentation](https://llm.datasette.io/en/stable/python-api.html) for more details.
 
-You can also import the model classes directly, which is useful if you want to point the `base_url` at a different Anthropic-compatible endpoint:
+You can also import the model classes directly if you need to specify project_id and region programmatically:
 ```python
 from llm_anthropic import ClaudeMessages
 
 model = ClaudeMessages(
-    "MiniMax-M2",
-    base_url="https://api.minimax.io/anthropic"
+    "claude-haiku-4-5@20251001",
+    project_id="your-project-id",
+    region="us-east5"
 )
 
-print(model.prompt("Fun facts about pangolins", key="eyJh..."))
+print(model.prompt("Fun facts about pangolins"))
 ```
 
 ## Extended reasoning with Claude 3.7 Sonnet and higher
@@ -234,41 +250,37 @@ response = llm.query(
 )
 ```
 
+## Regional Availability
+
+Claude models are available in different Vertex AI regions. The default region is `us-east5`, but you can specify different regions based on model availability:
+
+- **Claude 4 models**: Available in `us-east5`, `europe-west4`
+- **Claude 3.7 Sonnet**: Available in `us-east5`, `europe-west1`, `europe-west4`
+- **Claude 3.5 models**: Available in `us-east5`, `europe-west1`
+- **Claude 3 models**: Check [Google Cloud documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude) for current availability
+
 ## Development
 
 To set up this plugin locally, first checkout the code. Then create a new virtual environment:
 ```bash
-cd llm-anthropic
+cd llm-anthropic-vertex
 python3 -m venv venv
 source venv/bin/activate
 ```
 Now install the dependencies and test dependencies:
 ```bash
-llm install -e '.[test]'
+pip install -e '.[test]'
 ```
+
+Make sure you have Google Cloud credentials configured as described in the Authentication section above.
+
 To run the tests:
 ```bash
 pytest
 ```
 
-This project uses [pytest-recording](https://github.com/kiwicom/pytest-recording) to record Anthropic API responses for the tests.
+This project uses [pytest-recording](https://github.com/kiwicom/pytest-recording) to record Vertex AI API responses for the tests.
 
-If you add a new test that calls the API you can capture the API response like this:
-```bash
-PYTEST_ANTHROPIC_API_KEY="$(llm keys get anthropic)" pytest --record-mode once
-```
-You will need to have stored a valid Anthropic API key using this command first:
-```bash
-llm keys set anthropic
-# Paste key here
-```
-I use the following sequence:
-```bash
-# First delete the relevant cassette if it exists already:
-rm tests/cassettes/test_anthropic/test_thinking_prompt.yaml
-# Run this failing test to recreate the cassette
-PYTEST_ANTHROPIC_API_KEY="$(llm keys get claude)" pytest -k test_thinking_prompt --record-mode once
-# Now run the test again with --pdb to figure out how to update it
-pytest -k test_thinking_prompt --pdb
-# Edit test
-```
+## Credits
+
+This plugin is a fork of [llm-anthropic](https://github.com/simonw/llm-anthropic) by Simon Willison, adapted to work with Google Vertex AI by Mat Weldon. All credit for the original architecture and implementation goes to Simon Willison.

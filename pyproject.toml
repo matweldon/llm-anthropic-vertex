@@ -1,25 +1,22 @@
 [project]
-name = "llm-anthropic"
-version = "0.21.1"
-description = "LLM access to models by Anthropic, including the Claude series"
+name = "llm-anthropic-vertex"
+version = "0.1.0"
+description = "LLM access to Anthropic models via Google Vertex AI"
 readme = "README.md"
-authors = [{name = "Simon Willison"}]
+authors = [{name = "Simon Willison"}, {name = "Mat Weldon"}]
 license = "Apache-2.0"
 requires-python = ">=3.10"
 classifiers = []
 dependencies = [
     "llm>=0.26",
-    "anthropic>=0.72.0",
+    "anthropic[vertex]>=0.72.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/simonw/llm-anthropic"
-Changelog = "https://github.com/simonw/llm-anthropic/releases"
-Issues = "https://github.com/simonw/llm-anthropic/issues"
-CI = "https://github.com/simonw/llm-anthropic/actions"
+Homepage = "https://github.com/matweldon/llm-anthropic-vertex"
 
 [project.entry-points.llm]
-anthropic = "llm_anthropic"
+anthropic-vertex = "llm_anthropic"
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-recording", "pytest-asyncio", "cogapp"]

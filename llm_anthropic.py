@@ -1,6 +1,7 @@
-from anthropic import Anthropic, AsyncAnthropic
+from anthropic import AnthropicVertex, AsyncAnthropicVertex
 import llm
 import json
+import os
 from pydantic import Field, field_validator, model_validator
 
 DEFAULT_THINKING_TOKENS = 1024
@@ -9,96 +10,76 @@ DEFAULT_TEMPERATURE = 1.0
 
 @llm.hookimpl
 def register_models(register):
-    # https://docs.anthropic.com/claude/docs/models-overview
+    # https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude
+    # Claude 3 models
     register(
-        ClaudeMessages("claude-3-opus-20240229"),
-        AsyncClaudeMessages("claude-3-opus-20240229"),
-    )
-    register(
-        ClaudeMessages("claude-3-opus-latest"),
-        AsyncClaudeMessages("claude-3-opus-latest"),
+        ClaudeMessages("claude-3-opus@20240229"),
+        AsyncClaudeMessages("claude-3-opus@20240229"),
         aliases=("claude-3-opus",),
     )
     register(
-        ClaudeMessages("claude-3-sonnet-20240229"),
-        AsyncClaudeMessages("claude-3-sonnet-20240229"),
+        ClaudeMessages("claude-3-sonnet@20240229"),
+        AsyncClaudeMessages("claude-3-sonnet@20240229"),
         aliases=("claude-3-sonnet",),
     )
     register(
-        ClaudeMessages("claude-3-haiku-20240307"),
-        AsyncClaudeMessages("claude-3-haiku-20240307"),
+        ClaudeMessages("claude-3-haiku@20240307"),
+        AsyncClaudeMessages("claude-3-haiku@20240307"),
         aliases=("claude-3-haiku",),
     )
-    # 3.5 models
+    # Claude 3.5 models
     register(
         ClaudeMessages(
-            "claude-3-5-sonnet-20240620", supports_pdf=True, default_max_tokens=8192
+            "claude-3-5-sonnet@20240620", supports_pdf=True, default_max_tokens=8192
         ),
         AsyncClaudeMessages(
-            "claude-3-5-sonnet-20240620", supports_pdf=True, default_max_tokens=8192
+            "claude-3-5-sonnet@20240620", supports_pdf=True, default_max_tokens=8192
         ),
     )
     register(
         ClaudeMessages(
-            "claude-3-5-sonnet-20241022", supports_pdf=True, default_max_tokens=8192
+            "claude-3-5-sonnet-v2@20241022", supports_pdf=True, default_max_tokens=8192
         ),
         AsyncClaudeMessages(
-            "claude-3-5-sonnet-20241022", supports_pdf=True, default_max_tokens=8192
+            "claude-3-5-sonnet-v2@20241022", supports_pdf=True, default_max_tokens=8192
         ),
+        aliases=("claude-3.5-sonnet", "claude-3-5-sonnet-latest"),
     )
     register(
         ClaudeMessages(
-            "claude-3-5-sonnet-latest", supports_pdf=True, default_max_tokens=8192
+            "claude-3-5-haiku@20241022", supports_pdf=True, default_max_tokens=8192
         ),
         AsyncClaudeMessages(
-            "claude-3-5-sonnet-latest", supports_pdf=True, default_max_tokens=8192
+            "claude-3-5-haiku@20241022", supports_pdf=True, default_max_tokens=8192
         ),
-        aliases=("claude-3.5-sonnet", "claude-3.5-sonnet-latest"),
-    )
-    register(
-        ClaudeMessages("claude-3-5-haiku-latest", default_max_tokens=8192),
-        AsyncClaudeMessages("claude-3-5-haiku-latest", default_max_tokens=8192),
         aliases=("claude-3.5-haiku",),
     )
-    # 3.7
+    # Claude 3.7 models
     register(
         ClaudeMessages(
-            "claude-3-7-sonnet-20250219",
+            "claude-3-7-sonnet@20250219",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
         AsyncClaudeMessages(
-            "claude-3-7-sonnet-20250219",
+            "claude-3-7-sonnet@20250219",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
+        aliases=("claude-3.7-sonnet",),
     )
+    # Claude 4 models
     register(
         ClaudeMessages(
-            "claude-3-7-sonnet-latest",
+            "claude-opus-4@20250514",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
         AsyncClaudeMessages(
-            "claude-3-7-sonnet-latest",
-            supports_pdf=True,
-            supports_thinking=True,
-            default_max_tokens=8192,
-        ),
-        aliases=("claude-3.7-sonnet", "claude-3.7-sonnet-latest"),
-    )
-    register(
-        ClaudeMessages(
-            "claude-opus-4-0",
-            supports_pdf=True,
-            supports_thinking=True,
-            default_max_tokens=8192,
-        ),
-        AsyncClaudeMessages(
-            "claude-opus-4-0",
+            "claude-opus-4@20250514",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
@@ -107,65 +88,49 @@ def register_models(register):
     )
     register(
         ClaudeMessages(
-            "claude-sonnet-4-0",
+            "claude-sonnet-4@20250514",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
         AsyncClaudeMessages(
-            "claude-sonnet-4-0",
+            "claude-sonnet-4@20250514",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
         aliases=("claude-4-sonnet",),
     )
+    # Claude 4.5 models
     register(
         ClaudeMessages(
-            "claude-opus-4-1-20250805",
+            "claude-sonnet-4-5@20250929",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
         AsyncClaudeMessages(
-            "claude-opus-4-1-20250805",
+            "claude-sonnet-4-5@20250929",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-opus-4.1",),
+        aliases=("claude-4.5-sonnet", "claude-sonnet-4.5"),
     )
-    # claude-sonnet-4-5
     register(
         ClaudeMessages(
-            "claude-sonnet-4-5",
+            "claude-haiku-4-5@20251001",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
         AsyncClaudeMessages(
-            "claude-sonnet-4-5",
+            "claude-haiku-4-5@20251001",
             supports_pdf=True,
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-sonnet-4.5",),
-    )
-    # claude-haiku-4-5
-    register(
-        ClaudeMessages(
-            "claude-haiku-4-5-20251001",
-            supports_pdf=True,
-            supports_thinking=True,
-            default_max_tokens=8192,
-        ),
-        AsyncClaudeMessages(
-            "claude-haiku-4-5-20251001",
-            supports_pdf=True,
-            supports_thinking=True,
-            default_max_tokens=8192,
-        ),
-        aliases=("claude-haiku-4.5",),
+        aliases=("claude-4.5-haiku", "claude-haiku-4.5"),
     )
 
 
@@ -290,10 +255,7 @@ def source_for_attachment(attachment):
 
 
 class _Shared:
-    needs_key = "anthropic"
-    key_env_var = "ANTHROPIC_API_KEY"
     can_stream = True
-    base_url = None
 
     supports_thinking = False
     supports_schema = True
@@ -310,11 +272,14 @@ class _Shared:
         supports_pdf=False,
         supports_thinking=False,
         default_max_tokens=None,
-        base_url=None,
+        project_id=None,
+        region=None,
     ):
-        self.model_id = "anthropic/" + model_id
+        self.model_id = "anthropic-vertex/" + model_id
         self.claude_model_id = claude_model_id or model_id
-        self.base_url = base_url
+        # Get project_id and region from environment if not provided
+        self.project_id = project_id or os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT")
+        self.region = region or os.environ.get("GOOGLE_CLOUD_REGION") or os.environ.get("GCP_REGION", "us-east5")
         self.attachment_types = set()
         if supports_images:
             self.attachment_types.update(
@@ -571,9 +536,9 @@ class _Shared:
         return "Anthropic Messages: {}".format(self.model_id)
 
 
-class ClaudeMessages(_Shared, llm.KeyModel):
-    def execute(self, prompt, stream, response, conversation, key):
-        client = Anthropic(api_key=self.get_key(key), base_url=self.base_url)
+class ClaudeMessages(_Shared, llm.Model):
+    def execute(self, prompt, stream, response, conversation):
+        client = AnthropicVertex(project_id=self.project_id, region=self.region)
         kwargs = self.build_kwargs(prompt, conversation)
         prefill_text = self.prefill_text(prompt)
         if "betas" in kwargs:
@@ -609,9 +574,9 @@ class ClaudeMessages(_Shared, llm.KeyModel):
         self.set_usage(response)
 
 
-class AsyncClaudeMessages(_Shared, llm.AsyncKeyModel):
-    async def execute(self, prompt, stream, response, conversation, key):
-        client = AsyncAnthropic(api_key=self.get_key(key), base_url=self.base_url)
+class AsyncClaudeMessages(_Shared, llm.AsyncModel):
+    async def execute(self, prompt, stream, response, conversation):
+        client = AsyncAnthropicVertex(project_id=self.project_id, region=self.region)
         kwargs = self.build_kwargs(prompt, conversation)
         if "betas" in kwargs:
             messages_client = client.beta.messages

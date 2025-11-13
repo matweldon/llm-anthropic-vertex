@@ -32,7 +32,7 @@ This plugin uses Google Cloud credentials instead of API keys. Set up authentica
 gcloud auth application-default login
 ```
 
-### Method 2: Service Account (Recommended for production)
+### Method 2: Service Account
 1. Create a service account with Vertex AI permissions
 2. Download the service account JSON key file
 3. Set the environment variable:
@@ -46,37 +46,35 @@ Set your Google Cloud project ID and region using environment variables:
 
 ```bash
 export GOOGLE_CLOUD_PROJECT="your-project-id"
-export GOOGLE_CLOUD_REGION="us-east5"  # Optional, defaults to us-east5
+export GOOGLE_CLOUD_REGION="europe-west1"  # default
 ```
 
 Alternatively, you can use:
 ```bash
 export GCP_PROJECT="your-project-id"
-export GCP_REGION="us-east5"
+export GCP_REGION="europe-west1"
 ```
 
-Run `llm models` to list the models, and `llm models --options` to include a list of their options.
+Run `llm models list` to list the models, and `llm models --options` to include a list of their options.
 
 Run prompts like this:
 ```bash
-llm -m claude-opus-4.1 'Fun facts about walruses'
-llm -m claude-sonnet-4.5 'Fun facts about pelicans'
-llm -m claude-3.5-haiku 'Fun facts about armadillos'
-llm -m claude-haiku-4.5 'Fun facts about cormorants'
+llm -m vertex-sonnet-4.5 'Fun facts about Newport, Wales'
+llm -m anthropic-vertex/claude-3-opus@20240229 'Fun facts about national statistics'
 ```
 Image attachments are supported too:
 ```bash
-llm -m claude-sonnet-4.5 'describe this image' -a https://static.simonwillison.net/static/2024/pelicans.jpg
-llm -m claude-haiku-4.5 'extract text' -a page.png
+llm -m vertex-sonnet-4.5 'describe this image' -a https://static.simonwillison.net/static/2024/pelicans.jpg
+llm -m vertex-haiku-4.5 'extract text' -a page.png
 ```
 The Claude 3.5 and 4 models can handle PDF files:
 ```bash
-llm -m claude-sonnet-4.5 'extract text' -a page.pdf
+llm -m vertex-sonnet-4.5 'extract text' -a page.pdf
 ```
 Anthropic's models support [schemas](https://llm.datasette.io/en/stable/schemas.html). Here's how to use Claude 4 Sonnet to invent a dog:
 
 ```bash
-llm -m claude-sonnet-4.5 --schema 'name,age int,bio: one sentence' 'invent a surprising dog'
+llm -m vertex-sonnet-4.5 --schema 'name,age int,bio: one sentence' 'invent a surprising dog'
 ```
 Example output:
 ```json
@@ -93,23 +91,13 @@ Python code can access the models like this:
 ```python
 import llm
 
-model = llm.get_model("claude-haiku-4.5")
+model = llm.get_model("vertex-haiku-4.5")
+model.project_id = 'your-project-id'
+model.region = 'europe-west1'
 print(model.prompt("Fun facts about chipmunks"))
 ```
 Consult [LLM's Python API documentation](https://llm.datasette.io/en/stable/python-api.html) for more details.
 
-You can also import the model classes directly if you need to specify project_id and region programmatically:
-```python
-from llm_anthropic import ClaudeMessages
-
-model = ClaudeMessages(
-    "claude-haiku-4-5@20251001",
-    project_id="your-project-id",
-    region="us-east5"
-)
-
-print(model.prompt("Fun facts about pangolins"))
-```
 
 ## Extended reasoning with Claude 3.7 Sonnet and higher
 
@@ -118,7 +106,7 @@ Claude 3.7 introduced [extended thinking](https://www.anthropic.com/news/visible
 Use the `-o thinking 1` option to enable this feature:
 
 ```bash
-llm -m claude-3.7-sonnet -o thinking 1 'Write a convincing speech to congress about the need to protect the California Brown Pelican'
+llm -m vertex-4.5-sonnet -o thinking 1 'Write a convincing speech to a high school about the importance of official statistics'
 ```
 The chain of thought is not currently visible while using LLM, but it is logged to the database and can be viewed using this command:
 ```bash
@@ -130,42 +118,13 @@ llm logs --json -c | jq '.[0].response_json.content[0].thinking' -r
 ```
 By default up to 1024 tokens can be used for thinking. You can increase this budget with the `thinking_budget` option:
 ```bash
-llm -m claude-3.7-sonnet -o thinking_budget 32000 'Write a long speech about pelicans in French'
+llm -m vertex-4.5-sonnet -o thinking_budget 32000 'Write a long speech about pelicans in French'
 ```
 
 ## Model options
 
 The following options can be passed using `-o name value` on the CLI or as `keyword=value` arguments to the Python `model.prompt()` method:
 
-<!-- [[[cog
-import cog, llm
-_type_lookup = {
-    "number": "float",
-    "integer": "int",
-    "string": "str",
-    "object": "dict",
-}
-
-model = llm.get_model("claude-3.7-sonnet")
-output = []
-for name, field in model.Options.schema()["properties"].items():
-    any_of = field.get("anyOf")
-    if any_of is None:
-        any_of = [{"type": field["type"]}]
-    types = ", ".join(
-        [
-            _type_lookup.get(item["type"], item["type"])
-            for item in any_of
-            if item["type"] != "null"
-        ]
-    )
-    bits = ["- **", name, "**: `", types, "`\n"]
-    description = field.get("description", "")
-    if description:
-        bits.append('\n    ' + description + '\n\n')
-    output.append("".join(bits))
-cog.out("".join(output))
-]]] -->
 - **max_tokens**: `int`
 
     The maximum number of tokens to generate before stopping
@@ -210,18 +169,16 @@ cog.out("".join(output))
 
     Number of tokens to budget for thinking
 
-<!-- [[[end]]] -->
-
 The `prefill` option can be used to set the first part of the response. To increase the chance of returning JSON, set that to `{`:
 
 ```bash
-llm -m claude-sonnet-4.5 'Fun data about pelicans' \
+llm -m vertex-sonnet-4.5 'Fun data about pelicans' \
   -o prefill '{'
 ```
 If you do not want the prefill token to be echoed in the response, set `hide_prefill` to `true`:
 
 ```bash
-llm -m claude-3.5-haiku 'Short python function describing a pelican' \
+llm -m vertex-4.5-haiku 'Short python function describing a pelican' \
   -o prefill '```python' \
   -o hide_prefill true \
   -o stop_sequences '```'
@@ -230,13 +187,13 @@ This example sets `` ``` `` as the stop sequence, so the response will be a Pyth
 
 To pass a single stop sequence, send a string:
 ```bash
-llm -m claude-sonnet-4.5 'Fun facts about pelicans' \
+llm -m vertex-sonnet-4.5 'Fun facts about pelicans' \
   -o stop-sequences "beak"
 ```
 For multiple stop sequences, pass a JSON array:
 
 ```bash
-llm -m claude-sonnet-4.5 'Fun facts about pelicans' \
+llm -m vertex-sonnet-4.5 'Fun facts about pelicans' \
   -o stop-sequences '["beak", "feathers"]'
 ```
 
@@ -244,7 +201,7 @@ When using the Python API, pass a string or an array of strings:
 
 ```python
 response = llm.query(
-    model="claude-sonnet-4.5",
+    model="vertex-sonnet-4.5",
     query="Fun facts about pelicans",
     stop_sequences=["beak", "feathers"],
 )
@@ -252,12 +209,7 @@ response = llm.query(
 
 ## Regional Availability
 
-Claude models are available in different Vertex AI regions. The default region is `us-east5`, but you can specify different regions based on model availability:
-
-- **Claude 4 models**: Available in `us-east5`, `europe-west4`
-- **Claude 3.7 Sonnet**: Available in `us-east5`, `europe-west1`, `europe-west4`
-- **Claude 3.5 models**: Available in `us-east5`, `europe-west1`
-- **Claude 3 models**: Check [Google Cloud documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude) for current availability
+Claude models are available in different Vertex AI regions. Not all models are available in all regions. If in doubt, try setting the region to 'global'.
 
 ## Development
 
@@ -279,8 +231,12 @@ To run the tests:
 pytest
 ```
 
-This project uses [pytest-recording](https://github.com/kiwicom/pytest-recording) to record Vertex AI API responses for the tests.
+This project uses [pytest-recording](https://github.com/kiwicom/pytest-recording) to record Vertex AI API responses for the tests. Updating the stored responses is not recommended unless you know what you're doing. Please log an issue for assistance.
+
+
 
 ## Credits
 
 This plugin is a fork of [llm-anthropic](https://github.com/simonw/llm-anthropic) by Simon Willison, adapted to work with Google Vertex AI by Mat Weldon. All credit for the original architecture and implementation goes to Simon Willison.
+
+The module was initially updated by [Claude Code](https://www.claude.com/product/claude-code). All of the changes were checked by me, and the tests were validated, updated and rerun by me.

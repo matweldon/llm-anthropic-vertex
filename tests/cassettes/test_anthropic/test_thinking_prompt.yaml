@@ -1,34 +1,85 @@
 interactions:
 - request:
-    body: '{"max_tokens":8192,"messages":[{"role":"user","content":"Two names for
-      a pet pelican, be brief"}],"model":"claude-3-7-sonnet-latest","temperature":1.0,"thinking":{"type":"enabled","budget_tokens":1024},"stream":true}'
+    body: grant_type=refresh_token&client_id=xxx.apps.googleusercontent.com&client_id=xxx&refresh_token=xxx
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '268'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.5
+      x-goog-api-client:
+      - gl-python/3.13.9 auth/2.43.0 cred-type/u
+    method: POST
+    uri: https://oauth2.googleapis.com/token
+  response:
+    body:
+      string: "{\n  \"access_token\": \"xxx\",\n
+        \ \"expires_in\": 3599,\n  \"scope\": \"https://www.googleapis.com/auth/sqlservice.login
+        https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email
+        openid\",\n  \"token_type\": \"Bearer\",\n  \"access_token\": \"xxx\"\n}"
+    headers:
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Nov 2025 17:34:48 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - scaffolding on HTTPServer2
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"max_tokens":8192,"messages":[{"role":"user","content":[{"type":"text","text":"Two
+      names for a pet pelican, be brief"}]}],"temperature":1.0,"thinking":{"type":"enabled","budget_tokens":1024},"stream":true,"anthropic_version":"vertex-2023-10-16"}'
     headers:
       accept:
       - application/json
       accept-encoding:
       - gzip, deflate
-      anthropic-version:
-      - '2023-06-01'
       connection:
       - keep-alive
       content-length:
-      - '216'
+      - '246'
       content-type:
       - application/json
       host:
-      - api.anthropic.com
+      - europe-west1-aiplatform.googleapis.com
       user-agent:
-      - Anthropic/Python 0.47.0
+      - AnthropicVertex/Python 0.72.1
       x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - 'false'
+      - x64
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 0.47.0
+      - 0.72.1
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -36,182 +87,96 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.0
+      - 3.13.9
       x-stainless-stream-helper:
       - messages
       x-stainless-timeout:
       - NOT_GIVEN
     method: POST
-    uri: https://api.anthropic.com/v1/messages
+    uri: https://europe-west1-aiplatform.googleapis.com/v1/projects/dummy-project/locations/europe-west1/publishers/anthropic/models/claude-haiku-4-5@20251001:streamRawPredict
   response:
     body:
-      string: 'event: message_start
-
-        data: {"type":"message_start","message":{"id":"msg_01SNKQD4WaGocVoAVDeL7eZX","type":"message","role":"assistant","model":"claude-3-7-sonnet-20250219","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":45,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":8}}   }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":0,"content_block":{"type":"thinking","thinking":"","signature":""}             }
-
-
-        event: ping
-
-        data: {"type": "ping"}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"The
-        person is asking for two names"}               }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"
-        for a pet pelican,"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"
-        and they want me to be brief in"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"
-        my response. I''ll provide two concise"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":",
-        creative names that would suit a pelican"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":":\n\n1.
-        Something that relates"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"
-        to their large beak/po"} }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"uch\n2.
-        Something that relates"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"
-        to water/fishing\n\nI"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"''ll
-        keep my response very short"}          }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"
-        as requested."}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"signature_delta","signature":"EuYBCkQYAiJAZFFuoMD/kqVzMZ887Sa1rJBpa5UU5W+YVHe0PV1dh0T1ZHHOQcSUTMB9iPC6hhduyszf501Ao1McU4sUwlL2UhIM0nyNDklwN6dy0bkUGgx7Ny7JpGHlGJ3+mR8iMHcNBzvnVJwp6XmCs9jieB8BWgth2vmVOuSU+mUYw2bT4pkzVkVsxFnA1lh2T1kjRSpQltDXxi/Pyq3WdD/W4gnV9HIJ4Cb5olNXUrMvKUyoim0MfvyOU7wuyAi7J74CVw0Te6DW8GQf3/1jVYxeMEEBszuSU5IuyxB0BKWW5TfALM0="}            }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":0 }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":1,"content_block":{"type":"text","text":""}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"Scoop
-        and Beaky"}       }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":1}
-
-
-        event: message_delta
-
-        data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":94}     }
-
-
-        event: message_stop
-
-        data: {"type":"message_stop"      }
-
-
-        '
+      string: !!binary |
+        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
+        OwbHOAAA
     headers:
-      CF-RAY:
-      - 91761666c9b9f79a-LAX
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - text/event-stream; charset=utf-8
-      Date:
-      - Tue, 25 Feb 2025 07:47:29 GMT
-      Server:
-      - cloudflare
       Transfer-Encoding:
       - chunked
-      X-Robots-Tag:
-      - none
-      anthropic-organization-id:
-      - b320df16-c763-4455-b901-3f7d54e9a012
-      anthropic-ratelimit-input-tokens-limit:
-      - '200000'
-      anthropic-ratelimit-input-tokens-remaining:
-      - '200000'
-      anthropic-ratelimit-input-tokens-reset:
-      - '2025-02-25T07:47:28Z'
-      anthropic-ratelimit-output-tokens-limit:
-      - '80000'
-      anthropic-ratelimit-output-tokens-remaining:
-      - '76000'
-      anthropic-ratelimit-output-tokens-reset:
-      - '2025-02-25T07:47:31Z'
-      anthropic-ratelimit-requests-limit:
-      - '4000'
-      anthropic-ratelimit-requests-remaining:
-      - '3999'
-      anthropic-ratelimit-requests-reset:
-      - '2025-02-25T07:47:28Z'
-      anthropic-ratelimit-tokens-limit:
-      - '280000'
-      anthropic-ratelimit-tokens-remaining:
-      - '276000'
-      anthropic-ratelimit-tokens-reset:
-      - '2025-02-25T07:47:28Z'
-      cf-cache-status:
-      - DYNAMIC
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      cache-control:
+      - no-cache
+      date:
+      - Wed, 12 Nov 2025 17:34:48 GMT
       request-id:
-      - req_01Xh2DgdnZ2DPE5bACEkXpMG
-      via:
-      - 1.1 google
+      - req_vrtx_011CV4Q3cco8fPBZMDB6do47
+      server:
+      - hypercorn-h11
+      x-accel-buffering:
+      - 'no'
     status:
       code: 200
       message: OK

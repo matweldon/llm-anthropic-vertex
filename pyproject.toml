@@ -16,7 +16,7 @@ dependencies = [
 Homepage = "https://github.com/matweldon/llm-anthropic-vertex"
 
 [project.entry-points.llm]
-anthropic-vertex = "llm_anthropic"
+anthropic-vertex = "llm_anthropic_vertex"
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-recording", "pytest-asyncio", "cogapp"]

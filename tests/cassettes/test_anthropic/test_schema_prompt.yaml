@@ -1,34 +1,85 @@
 interactions:
 - request:
-    body: '{"max_tokens":8192,"messages":[{"role":"user","content":"Invent a good
-      dog"}],"model":"claude-3-7-sonnet-latest","temperature":1.0,"tools":[{"name":"output_structured_data","input_schema":{"properties":{"name":{"title":"Name","type":"string"},"age":{"title":"Age","type":"integer"},"bio":{"title":"Bio","type":"string"}},"required":["name","age","bio"],"title":"Dog","type":"object"}}],"tool_choice":{"type":"tool","name":"output_structured_data"},"stream":true}'
+    body: grant_type=refresh_token&client_id=xxx.apps.googleusercontent.com&client_id=xxx&refresh_token=xxx
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '268'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.5
+      x-goog-api-client:
+      - gl-python/3.13.9 auth/2.43.0 cred-type/u
+    method: POST
+    uri: https://oauth2.googleapis.com/token
+  response:
+    body:
+      string: "{\n  \"access_token\": \"xxx\",\n
+        \ \"expires_in\": 3599,\n  \"scope\": \"https://www.googleapis.com/auth/cloud-platform
+        https://www.googleapis.com/auth/sqlservice.login openid https://www.googleapis.com/auth/userinfo.email\",\n
+        \ \"token_type\": \"Bearer\",\n  \"access_token\": \"xxx\"\n}"
+    headers:
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Nov 2025 17:34:30 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - scaffolding on HTTPServer2
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"max_tokens":8192,"messages":[{"role":"user","content":[{"type":"text","text":"Invent
+      a good dog"}]}],"temperature":1.0,"tools":[{"name":"output_structured_data","input_schema":{"properties":{"name":{"title":"Name","type":"string"},"age":{"title":"Age","type":"integer"},"bio":{"title":"Bio","type":"string"}},"required":["name","age","bio"],"title":"Dog","type":"object"}}],"tool_choice":{"type":"tool","name":"output_structured_data"},"stream":true,"anthropic_version":"vertex-2023-10-16"}'
     headers:
       accept:
       - application/json
       accept-encoding:
       - gzip, deflate
-      anthropic-version:
-      - '2023-06-01'
       connection:
       - keep-alive
       content-length:
-      - '462'
+      - '492'
       content-type:
       - application/json
       host:
-      - api.anthropic.com
+      - europe-west1-aiplatform.googleapis.com
       user-agent:
-      - Anthropic/Python 0.47.2
+      - AnthropicVertex/Python 0.72.1
       x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - 'false'
+      - x64
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 0.47.2
+      - 0.72.1
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -36,203 +87,85 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.0
+      - 3.13.9
       x-stainless-stream-helper:
       - messages
       x-stainless-timeout:
       - NOT_GIVEN
     method: POST
-    uri: https://api.anthropic.com/v1/messages
+    uri: https://europe-west1-aiplatform.googleapis.com/v1/projects/dummy-project/locations/europe-west1/publishers/anthropic/models/claude-haiku-4-5@20251001:streamRawPredict
   response:
     body:
-      string: 'event: message_start
-
-        data: {"type":"message_start","message":{"id":"msg_011RyssDpYDzSyU3zK8Bhvbf","type":"message","role":"assistant","model":"claude-3-7-sonnet-20250219","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":429,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":25}}}
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_01BEUcgSZ295kTDkxpovXdpA","name":"output_structured_data","input":{}}            }
-
-
-        event: ping
-
-        data: {"type": "ping"}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":""}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"n"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"am"}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"e\":
-        \""}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"Buddy\""}
-        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":",
-        \"age\":"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        3"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":",
-        \"bio\":"}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        \"Buddy is "}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"a
-        loy"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"al
-        and "}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ene"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"rgetic
-        Gol"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"den
-        Ret"}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ri"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ever
-        w"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ho
-        love"}               }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"s
-        long wal"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ks.\"}"}          }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":0      }
-
-
-        event: message_delta
-
-        data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":140}         }
-
-
-        event: message_stop
-
-        data: {"type":"message_stop"      }
-
-
-        '
+      string: !!binary |
+        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
     headers:
-      CF-RAY:
-      - 9184543f7bb208cb-LAX
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - text/event-stream; charset=utf-8
-      Date:
-      - Thu, 27 Feb 2025 01:16:23 GMT
-      Server:
-      - cloudflare
       Transfer-Encoding:
       - chunked
-      X-Robots-Tag:
-      - none
-      anthropic-organization-id:
-      - b320df16-c763-4455-b901-3f7d54e9a012
-      anthropic-ratelimit-input-tokens-limit:
-      - '200000'
-      anthropic-ratelimit-input-tokens-remaining:
-      - '200000'
-      anthropic-ratelimit-input-tokens-reset:
-      - '2025-02-27T01:16:22Z'
-      anthropic-ratelimit-output-tokens-limit:
-      - '80000'
-      anthropic-ratelimit-output-tokens-remaining:
-      - '76000'
-      anthropic-ratelimit-output-tokens-reset:
-      - '2025-02-27T01:16:25Z'
-      anthropic-ratelimit-requests-limit:
-      - '4000'
-      anthropic-ratelimit-requests-remaining:
-      - '3999'
-      anthropic-ratelimit-requests-reset:
-      - '2025-02-27T01:16:22Z'
-      anthropic-ratelimit-tokens-limit:
-      - '280000'
-      anthropic-ratelimit-tokens-remaining:
-      - '276000'
-      anthropic-ratelimit-tokens-reset:
-      - '2025-02-27T01:16:22Z'
-      cf-cache-status:
-      - DYNAMIC
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      cache-control:
+      - no-cache
+      date:
+      - Wed, 12 Nov 2025 17:34:30 GMT
       request-id:
-      - req_01R68QTrbL1hYTBF3ozzrsxj
-      via:
-      - 1.1 google
+      - req_vrtx_011CV4Q2JsRNSGTQEaVzrPw5
+      server:
+      - hypercorn-h11
+      x-accel-buffering:
+      - 'no'
     status:
       code: 200
       message: OK

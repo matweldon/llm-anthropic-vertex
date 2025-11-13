@@ -1,34 +1,85 @@
 interactions:
 - request:
-    body: '{"max_tokens":8192,"messages":[{"role":"user","content":"Invent a terrific
-      dog"}],"model":"claude-3-7-sonnet-latest","temperature":1.0,"tools":[{"name":"output_structured_data","input_schema":{"properties":{"name":{"title":"Name","type":"string"},"age":{"title":"Age","type":"integer"},"bio":{"title":"Bio","type":"string"}},"required":["name","age","bio"],"title":"Dog","type":"object"}}],"tool_choice":{"type":"tool","name":"output_structured_data"},"stream":true}'
+    body: grant_type=refresh_token&client_id=xxx.apps.googleusercontent.com&client_id=xxx&refresh_token=xxx
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '268'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.32.5
+      x-goog-api-client:
+      - gl-python/3.13.9 auth/2.43.0 cred-type/u
+    method: POST
+    uri: https://oauth2.googleapis.com/token
+  response:
+    body:
+      string: "{\n  \"access_token\": \"xxx\",\n
+        \ \"expires_in\": 3599,\n  \"scope\": \"https://www.googleapis.com/auth/userinfo.email
+        openid https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/sqlservice.login\",\n
+        \ \"token_type\": \"Bearer\",\n  \"access_token\": \"xxx\"\n}"
+    headers:
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 12 Nov 2025 17:34:38 GMT
+      Expires:
+      - Mon, 01 Jan 1990 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - scaffolding on HTTPServer2
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"max_tokens":8192,"messages":[{"role":"user","content":[{"type":"text","text":"Invent
+      a terrific dog"}]}],"temperature":1.0,"tools":[{"name":"output_structured_data","input_schema":{"properties":{"name":{"title":"Name","type":"string"},"age":{"title":"Age","type":"integer"},"bio":{"title":"Bio","type":"string"}},"required":["name","age","bio"],"title":"Dog","type":"object"}}],"tool_choice":{"type":"tool","name":"output_structured_data"},"stream":true,"anthropic_version":"vertex-2023-10-16"}'
     headers:
       accept:
       - application/json
       accept-encoding:
       - gzip, deflate
-      anthropic-version:
-      - '2023-06-01'
       connection:
       - keep-alive
       content-length:
-      - '466'
+      - '496'
       content-type:
       - application/json
       host:
-      - api.anthropic.com
+      - europe-west1-aiplatform.googleapis.com
       user-agent:
-      - AsyncAnthropic/Python 0.47.2
+      - AsyncAnthropicVertex/Python 0.72.1
       x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
+      - x64
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 0.47.2
+      - 0.72.1
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -36,571 +87,81 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.0
+      - 3.13.9
       x-stainless-stream-helper:
       - messages
       x-stainless-timeout:
       - NOT_GIVEN
     method: POST
-    uri: https://api.anthropic.com/v1/messages
+    uri: https://europe-west1-aiplatform.googleapis.com/v1/projects/dummy-project/locations/europe-west1/publishers/anthropic/models/claude-haiku-4-5@20251001:streamRawPredict
   response:
     body:
-      string: 'event: message_start
-
-        data: {"type":"message_start","message":{"id":"msg_016apc5To8Trf2B4UEafTTdF","type":"message","role":"assistant","model":"claude-3-7-sonnet-20250219","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":430,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":20}}             }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_01QH2o4czcMf6id3C9Herxi3","name":"output_structured_data","input":{}}     }
-
-
-        event: ping
-
-        data: {"type": "ping"}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":""}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\""}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"name"}
-        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"\":"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        \"Maximu"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"s
-        T"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"hunder\""}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":",
-        \""}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"age\":
-        3"}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":",
-        \"bio"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"\":
-        \"M"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"axim"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"us
-        Thunder"} }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        is "}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"an
-        extra"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ordinary
-        "}               }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"golden
-        retri"}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ev"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"er
-        with a "}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"nat"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ural"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        tale"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"nt
-        f"} }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"or
-        search an"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"d
-        rescue "}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"operatio"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ns."}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        H"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"is
-        keen se"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"nse
-        "}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"of
-        smell can"}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        d"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"etect
-        peop"}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"le
-        trapped"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        un"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"der
-        debris f"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"rom
-        ov"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"er
-        a mil"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"e
-        away"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":".
-        When he''"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"s
-        n"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ot
-        saving "}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"lives,
-        Ma"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ximus
-        enjoys"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        sur"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"fing
-        at the "}          }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"beach
-        and ha"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"s
-        won three"}          }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        l"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ocal
-        "}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"dog
-        surfi"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ng
-        compe"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"titions.
-        He"}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"''s
-        also inc"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"redibl"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"y
-        gentle w"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ith"}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        children"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        and regula"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"rly
-        visi"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ts
-        hospitals"}             }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        as a therap"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"y
-        "}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"dog.
-        H"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"is
-        favo"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"ri"}        }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"te
-        "}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"trea"}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"t
-        "}      }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"is
-        "}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"peanut
-        bu"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"tter,
-        an"} }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"d
-        he has "}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"a
-        unique how"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"l
-        that sou"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"nds
-        r"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"emarkably"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"
-        like he''s "}       }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"saying
-        \\\""}}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"he"}    }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"llo"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":".\\\"\"}"}
-        }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":0 }
-
-
-        event: message_delta
-
-        data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":175}
-        }
-
-
-        event: message_stop
-
-        data: {"type":"message_stop"        }
-
-
-        '
+      string: !!binary |
+        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
+        AAD//wMAcs1xe484AAA=
     headers:
-      CF-RAY:
-      - 9184617cfc656a29-LAX
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - text/event-stream; charset=utf-8
-      Date:
-      - Thu, 27 Feb 2025 01:25:26 GMT
-      Server:
-      - cloudflare
       Transfer-Encoding:
       - chunked
-      X-Robots-Tag:
-      - none
-      anthropic-organization-id:
-      - b320df16-c763-4455-b901-3f7d54e9a012
-      anthropic-ratelimit-input-tokens-limit:
-      - '200000'
-      anthropic-ratelimit-input-tokens-remaining:
-      - '200000'
-      anthropic-ratelimit-input-tokens-reset:
-      - '2025-02-27T01:25:24Z'
-      anthropic-ratelimit-output-tokens-limit:
-      - '80000'
-      anthropic-ratelimit-output-tokens-remaining:
-      - '76000'
-      anthropic-ratelimit-output-tokens-reset:
-      - '2025-02-27T01:25:28Z'
-      anthropic-ratelimit-requests-limit:
-      - '4000'
-      anthropic-ratelimit-requests-remaining:
-      - '3999'
-      anthropic-ratelimit-requests-reset:
-      - '2025-02-27T01:25:24Z'
-      anthropic-ratelimit-tokens-limit:
-      - '280000'
-      anthropic-ratelimit-tokens-remaining:
-      - '276000'
-      anthropic-ratelimit-tokens-reset:
-      - '2025-02-27T01:25:24Z'
-      cf-cache-status:
-      - DYNAMIC
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      cache-control:
+      - no-cache
+      date:
+      - Wed, 12 Nov 2025 17:34:39 GMT
       request-id:
-      - req_013Xe3DiNyBAENbYD8qmKw7z
-      via:
-      - 1.1 google
+      - req_vrtx_011CV4Q2vvqjN28Dd4ywsGEz
+      server:
+      - hypercorn-h11
+      x-accel-buffering:
+      - 'no'
     status:
       code: 200
       message: OK

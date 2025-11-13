@@ -15,17 +15,14 @@ def register_models(register):
     register(
         ClaudeMessages("claude-3-opus@20240229"),
         AsyncClaudeMessages("claude-3-opus@20240229"),
-        aliases=("claude-3-opus",),
     )
     register(
         ClaudeMessages("claude-3-sonnet@20240229"),
         AsyncClaudeMessages("claude-3-sonnet@20240229"),
-        aliases=("claude-3-sonnet",),
     )
     register(
         ClaudeMessages("claude-3-haiku@20240307"),
         AsyncClaudeMessages("claude-3-haiku@20240307"),
-        aliases=("claude-3-haiku",),
     )
     # Claude 3.5 models
     register(
@@ -43,7 +40,6 @@ def register_models(register):
         AsyncClaudeMessages(
             "claude-3-5-sonnet-v2@20241022", supports_pdf=True, default_max_tokens=8192
         ),
-        aliases=("claude-3.5-sonnet", "claude-3-5-sonnet-latest"),
     )
     register(
         ClaudeMessages(
@@ -52,7 +48,6 @@ def register_models(register):
         AsyncClaudeMessages(
             "claude-3-5-haiku@20241022", supports_pdf=True, default_max_tokens=8192
         ),
-        aliases=("claude-3.5-haiku",),
     )
     # Claude 3.7 models
     register(
@@ -68,7 +63,6 @@ def register_models(register):
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-3.7-sonnet",),
     )
     # Claude 4 models
     register(
@@ -84,7 +78,6 @@ def register_models(register):
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-4-opus",),
     )
     register(
         ClaudeMessages(
@@ -99,7 +92,6 @@ def register_models(register):
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-4-sonnet",),
     )
     # Claude 4.5 models
     register(
@@ -115,7 +107,7 @@ def register_models(register):
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-4.5-sonnet", "claude-sonnet-4.5"),
+        aliases=("vertex-4.5-sonnet", "vertex-sonnet-4.5"),
     )
     register(
         ClaudeMessages(
@@ -130,7 +122,7 @@ def register_models(register):
             supports_thinking=True,
             default_max_tokens=8192,
         ),
-        aliases=("claude-4.5-haiku", "claude-haiku-4.5"),
+        aliases=("vertex-4.5-haiku", "vertex-haiku-4.5"),
     )
 
 
@@ -278,8 +270,8 @@ class _Shared:
         self.model_id = "anthropic-vertex/" + model_id
         self.claude_model_id = claude_model_id or model_id
         # Get project_id and region from environment if not provided
-        self.project_id = project_id or os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT")
-        self.region = region or os.environ.get("GOOGLE_CLOUD_REGION") or os.environ.get("GCP_REGION", "us-east5")
+        self.project_id = project_id or os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT") or os.environ.get('ANTHROPIC_VERTEX_PROJECT_ID')
+        self.region = region or os.environ.get("GOOGLE_CLOUD_REGION") or os.environ.get("GCP_REGION", "europe-west1")
         self.attachment_types = set()
         if supports_images:
             self.attachment_types.update(
@@ -432,7 +424,7 @@ class _Shared:
     def build_kwargs(self, prompt, conversation):
         if prompt.schema and prompt.tools:
             raise ValueError(
-                "llm-anthropic does not yet support using both schema and tools in the same prompt"
+                "llm-anthropic-vertex does not yet support using both schema and tools in the same prompt"
             )
         kwargs = {
             "model": self.claude_model_id,
@@ -533,7 +525,7 @@ class _Shared:
         return bool(tool_uses)
 
     def __str__(self):
-        return "Anthropic Messages: {}".format(self.model_id)
+        return "Anthropic via Vertex: {}".format(self.model_id)
 
 
 class ClaudeMessages(_Shared, llm.Model):

@@ -237,7 +237,7 @@ uv sync --extra test
 Alternatively, if you have an existing virtual environment:
 ```bash
 cd llm-anthropic-vertex
-uv pip install -e '.[test]'
+llm install -e '.[test]'
 ```
 
 Make sure you have Google Cloud credentials configured as described in the Authentication section above.

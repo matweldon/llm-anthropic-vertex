@@ -450,11 +450,10 @@ wheels = [
 [[package]]
 name = "llm-anthropic-vertex"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "anthropic", extra = ["vertex"] },
     { name = "llm" },
-    { name = "pytest" },
 ]
 
 [package.optional-dependencies]
@@ -470,7 +469,6 @@ requires-dist = [
     { name = "anthropic", extras = ["vertex"], specifier = ">=0.72.0" },
     { name = "cogapp", marker = "extra == 'test'" },
     { name = "llm", specifier = ">=0.26" },
-    { name = "pytest", specifier = ">=9.0.1" },
     { name = "pytest", marker = "extra == 'test'" },
     { name = "pytest-asyncio", marker = "extra == 'test'" },
     { name = "pytest-recording", marker = "extra == 'test'" },

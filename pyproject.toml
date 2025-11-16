@@ -12,11 +12,17 @@ dependencies = [
     "anthropic[vertex]>=0.72.0",
 ]
 
+[tool.setuptools]
+py-modules = ["llm_anthropic_vertex", "gcloud_setup"]
+
 [project.urls]
 Homepage = "https://github.com/matweldon/llm-anthropic-vertex"
 
 [project.entry-points.llm]
 anthropic-vertex = "llm_anthropic_vertex"
+
+[project.scripts]
+llm-anthropic-vertex-setup = "gcloud_setup:main"
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-recording", "pytest-asyncio", "cogapp"]

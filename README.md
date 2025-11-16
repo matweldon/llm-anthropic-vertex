@@ -16,12 +16,21 @@ cd llm-anthropic-vertex
 llm install -e .
 ```
 
+
+
 ## Prerequisites
 
 1. A Google Cloud project with the Vertex AI API enabled
 2. Appropriate IAM roles on your user account (or a Service Account with appropriate IAM roles, see below)
 3. Each Anthropic model to be used must be individually enabled in your project's Vertex AI model garden console
 4. Install the `gcloud` SDK
+
+### Set up utility
+This plugin includes a setup utility to help you configure your Google Cloud project and region. After installing the plugin, run it like this:
+```bash
+llm-anthropic-vertex-setup
+```
+This will guide you through selecting a Google Cloud project and region, and set the appropriate environment variables. Note that the utility does not modify your shell profile, so you will need to add the environment variables it suggests to your shell profile manually.
 
 ## Authentication
 
@@ -54,6 +63,10 @@ Alternatively, you can use:
 export GCP_PROJECT="your-project-id"
 export GCP_REGION="europe-west1"
 ```
+
+
+
+## Usage from the command line
 
 Run `llm models list` to list the models, and `llm models --options` to include a list of their options.
 

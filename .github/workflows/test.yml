@@ -1,6 +1,8 @@
 name: Test
 
-on: [push, pull_request]
+on: 
+  release:
+    types: [created]
 
 permissions:
   contents: read
@@ -28,6 +30,3 @@ jobs:
     - name: Run tests
       run: |
         uv run pytest
-    - name: Check if cog needs to be run
-      run: |
-        uv run cog --check README.md

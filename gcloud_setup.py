@@ -189,40 +189,25 @@ def get_current_project() -> Optional[str]:
 def set_project_env_var(project: str) -> bool:
     """Set the GOOGLE_CLOUD_PROJECT environment variable."""
     # Check if already set
-    existing = os.environ.get('GOOGLE_CLOUD_PROJECT')
+    existing = os.environ.get('GOOGLE_CLOUD_PROJECT') or os.environ.get('GCP_PROJECT') or os.environ.get('ANTHROPIC_VERTEX_PROJECT_ID')
     if existing:
         if existing == project:
-            print_success(f"GOOGLE_CLOUD_PROJECT already set to: {project}")
+            print_success(f"GOOGLE_CLOUD_PROJECT/GCP_PROJECT/ANTHROPIC_VERTEX_PROJECT_ID already set to: {project}")
             return True
         else:
-            print_warning(f"GOOGLE_CLOUD_PROJECT is set to '{existing}' but active project is '{project}'")
+            print_warning(f"GOOGLE_CLOUD_PROJECT/GCP_PROJECT/ANTHROPIC_VERTEX_PROJECT_ID is set to '{existing}' but active project is '{project}'")
             response = input(f"Update to '{project}'? [Y/n]: ").strip().lower()
             if response and response != 'y':
                 print_info("Keeping existing GOOGLE_CLOUD_PROJECT value")
                 return True
 
-    # For the current session (this only affects subprocesses, not the parent shell)
+    # It's not possible to set environment variables in the parent shell from a script,
+    # Print the export command for the user to run manually
+    print_info(f"\nTo set the project for this session, run:")
+    print_info(f"  export GOOGLE_CLOUD_PROJECT={project}")
     os.environ['GOOGLE_CLOUD_PROJECT'] = project
 
-    # Provide instructions for permanent setup
-    print_success(f"Set GOOGLE_CLOUD_PROJECT={project} for this session")
-    print_info("\nTo make this permanent, add to your shell configuration:")
-
-    shell = os.environ.get('SHELL', '')
-    if 'bash' in shell:
-        config_file = '~/.bashrc'
-    elif 'zsh' in shell:
-        config_file = '~/.zshrc'
-    elif 'fish' in shell:
-        config_file = '~/.config/fish/config.fish'
-        print_info(f"  echo 'set -gx GOOGLE_CLOUD_PROJECT {project}' >> {config_file}")
-        return True
-    else:
-        config_file = 'your shell configuration file'
-
-    print_info(f"  echo 'export GOOGLE_CLOUD_PROJECT={project}' >> {config_file}")
-
-    return True
+    return False
 
 
 def get_region() -> Optional[str]:
@@ -233,26 +218,11 @@ def get_region() -> Optional[str]:
         print_success(f"Using region from environment: {region}")
         return region
 
-    # Check gcloud config
-    try:
-        result = subprocess.run(
-            ['gcloud', 'config', 'get-value', 'compute/region'],
-            capture_output=True,
-            text=True,
-            check=False
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            region = result.stdout.strip()
-            if region and region != '(unset)':
-                print_success(f"Using region from gcloud config: {region}")
-                response = input(f"Use this region? [Y/n]: ").strip().lower()
-                if not response or response == 'y':
-                    return region
-    except FileNotFoundError:
-        pass
-
+    # Prompt user for region
+    print_info("\nNo region configured.")
     # Prompt user
-    print_info("\nCommon Vertex AI regions:")
+    print_info("Common Vertex AI regions:")
+    print_info("  global         (Multi-region)")
     print_info("  us-central1    (Iowa)")
     print_info("  us-east4       (Virginia)")
     print_info("  europe-west1   (Belgium)")
@@ -260,38 +230,15 @@ def get_region() -> Optional[str]:
     print_info("  asia-southeast1 (Singapore)")
     print_info("\nFor the full list, see: https://cloud.google.com/vertex-ai/docs/general/locations")
 
-    while True:
-        region = input("\nEnter your region (default: europe-west1): ").strip()
-        if not region:
-            region = 'europe-west1'
+    region = input("Enter your preferred Google Cloud region (e.g., us-central1): ").strip()
+    if not region:
+        print_error("No region provided")
+        return None
+    # Instructions to set the environment variable
+    print_info(f"\nTo set the region for this session, run:")
+    print_info(f"  export GOOGLE_CLOUD_REGION={region}")
 
-        # Validate region format (basic check)
-        if region.count('-') >= 2 or region in ['us-central1', 'us-east4', 'europe-west1', 'europe-west4', 'asia-southeast1']:
-            break
-        else:
-            print_warning("Region format looks incorrect. Please use format like 'us-central1'")
-
-    # Set environment variable
-    os.environ['GOOGLE_CLOUD_REGION'] = region
-    print_success(f"Set GOOGLE_CLOUD_REGION={region} for this session")
-
-    # Provide instructions for permanent setup
-    print_info("\nTo make this permanent, add to your shell configuration:")
-    shell = os.environ.get('SHELL', '')
-    if 'bash' in shell:
-        config_file = '~/.bashrc'
-    elif 'zsh' in shell:
-        config_file = '~/.zshrc'
-    elif 'fish' in shell:
-        config_file = '~/.config/fish/config.fish'
-        print_info(f"  echo 'set -gx GOOGLE_CLOUD_REGION {region}' >> {config_file}")
-        return region
-    else:
-        config_file = 'your shell configuration file'
-
-    print_info(f"  echo 'export GOOGLE_CLOUD_REGION={region}' >> {config_file}")
-
-    return region
+    return False
 
 
 def check_vertex_api_enabled(project: str) -> bool:
@@ -361,7 +308,7 @@ def main():
 
     print_success(f"Active gcloud project: {project}")
     if not set_project_env_var(project):
-        print_error("\n❌ Setup incomplete: Could not set project environment variable")
+        print_error("\n❌ Setup incomplete: Set project environment variable")
         return 1
 
     print()
@@ -369,7 +316,7 @@ def main():
     # Step 4: Get region
     region = get_region()
     if not region:
-        print_error("\n❌ Setup incomplete: No region configured")
+        print_error("\n❌ Setup incomplete: Configure region")
         return 1
 
     print()

@@ -13,7 +13,7 @@ Install this plugin in the same environment as [LLM](https://llm.datasette.io/).
 ### From source
 ```bash
 cd llm-anthropic-vertex
-llm install -e .
+uv pip install -e .
 ```
 
 
@@ -226,15 +226,18 @@ Claude models are available in different Vertex AI regions. Not all models are a
 
 ## Development
 
-To set up this plugin locally, first checkout the code. Then create a new virtual environment:
+To set up this plugin locally, first checkout the code. Then create a new virtual environment and install dependencies using uv:
 ```bash
 cd llm-anthropic-vertex
-python3 -m venv venv
-source venv/bin/activate
+uv venv
+source .venv/bin/activate
+uv sync --extra test
 ```
-Now install the dependencies and test dependencies:
+
+Alternatively, if you have an existing virtual environment:
 ```bash
-pip install -e '.[test]'
+cd llm-anthropic-vertex
+uv pip install -e '.[test]'
 ```
 
 Make sure you have Google Cloud credentials configured as described in the Authentication section above.

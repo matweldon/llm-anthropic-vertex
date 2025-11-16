@@ -13,7 +13,7 @@ Install this plugin in the same environment as [LLM](https://llm.datasette.io/).
 ### From source
 ```bash
 cd llm-anthropic-vertex
-uv pip install -e .
+llm install -e .
 ```
 
 

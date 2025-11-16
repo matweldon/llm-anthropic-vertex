@@ -2,18 +2,21 @@ name: Publish Python Package
 
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to upload wheel to (e.g., v1.0.0)'
+        required: true
+        type: string
   release:
     types: [created]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: release
-    permissions:
-      id-token: write
     steps:
     - uses: actions/checkout@v5
     - name: Set up Python
@@ -25,5 +28,18 @@ jobs:
     - name: Build
       run: |
         uv build
-    - name: Publish
-      uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Upload wheel to release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        # Determine release tag
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          RELEASE_TAG="${{ inputs.release_tag }}"
+        else
+          RELEASE_TAG="${{ github.event.release.tag_name }}"
+        fi
+
+        # Upload all wheels to the release
+        for wheel in dist/*.whl; do
+          gh release upload "$RELEASE_TAG" "$wheel" --clobber
+        done

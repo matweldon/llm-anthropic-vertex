@@ -1,0 +1,57 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 0.2.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 0  # Fetch all history for changelog generation
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.14"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Bump version with uv
+      run: |
+        uv version ${{ inputs.version }}
+
+    - name: Commit version bump
+      run: |
+        git add pyproject.toml
+        git commit -m "Bump version to ${{ inputs.version }}"
+        git push
+
+    - name: Create and push tag
+      run: |
+        git tag "v${{ inputs.version }}"
+        git push origin "v${{ inputs.version }}"
+
+    - name: Create GitHub Release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh release create "v${{ inputs.version }}" \
+          --title "Release ${{ inputs.version }}" \
+          --generate-notes

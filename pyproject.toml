@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "llm-anthropic-vertex"
-version = "0.1.0"
+version = "0.7.0"
 description = "LLM access to Anthropic models via Google Vertex AI"
 readme = "README.md"
 authors = [{name = "Simon Willison"}, {name = "Mat Weldon"}]
